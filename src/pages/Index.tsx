@@ -21,8 +21,15 @@ import tarotData from "@/data/tarotData.json";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 const Index = () => {
-	const { coins, isCardRead, spendCoins, earnCoins, markCardAsRead } =
-		useGameState();
+	const {
+		coins,
+		readCards,
+		isCardRead,
+		spendCoins,
+		earnCoins,
+		updateReadCards,
+		resetGameState,
+	} = useGameState();
 
 	const [selectedCardType, setSelectedCardType] =
 		useState<CardTypeConfig | null>(null);
@@ -54,6 +61,14 @@ const Index = () => {
 		setIsConfirmOpen(true);
 	};
 
+	const getRevealedCardData = (id: number) => {
+		const revealedCardData = data.data.find((card) => {
+			return card.id === id;
+		});
+
+		return revealedCardData ?? null;
+	};
+
 	const handleConfirmReading = () => {
 		if (!selectedCardType) return;
 
@@ -61,7 +76,7 @@ const Index = () => {
 			const card = getRandomCard();
 			setRevealedCard(card);
 			setRevealedType(selectedCardType.type);
-			markCardAsRead(selectedCardType.type);
+			updateReadCards(selectedCardType.type, card.id);
 			setIsConfirmOpen(false);
 			setIsProphecyOpen(true);
 
@@ -146,6 +161,7 @@ const Index = () => {
 								isSelected={selectedCardType?.type === config.type}
 								onClick={() => handleCardClick(config)}
 								index={index}
+								revealedCard={getRevealedCardData(readCards[config.type])}
 							/>
 						))}
 					</div>
@@ -159,6 +175,7 @@ const Index = () => {
 					<p className="font-body text-xs text-muted-foreground/60">
 						Cards reset at midnight
 					</p>
+					<button onClick={resetGameState}>Reset Card</button>
 				</footer>
 			</main>
 
