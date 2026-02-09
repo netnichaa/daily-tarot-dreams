@@ -35,9 +35,9 @@ const Index = () => {
 		useState<CardTypeConfig | null>(null);
 	const [isConfirmOpen, setIsConfirmOpen] = useState(false);
 	const [isProphecyOpen, setIsProphecyOpen] = useState(false);
+	const [isCardOpened, setIsCardOpened] = useState(false);
 	const [isAdModalOpen, setIsAdModalOpen] = useState(false);
 	const [isWatchingAd, setIsWatchingAd] = useState(false);
-	const [revealedCard, setRevealedCard] = useState<TarotCardType | null>(null);
 	const [revealedType, setRevealedType] = useState<ProphecyType | null>(null);
 	const isMobile = useIsMobile();
 
@@ -51,17 +51,18 @@ const Index = () => {
 
 	const handleCardClick = (config: CardTypeConfig) => {
 		if (isCardRead(config.type)) {
-			toast.info(`You've already read your ${config.label} prophecy today`, {
-				description: "Come back tomorrow for a new reading",
-				icon: <Moon className="w-4 h-4" />,
-			});
+			setSelectedCardType(config);
+			setIsCardOpened(true);
+			setRevealedType(config.type);
 			return;
 		}
 		setSelectedCardType(config);
 		setIsConfirmOpen(true);
 	};
 
-	const getRevealedCardData = (id: number) => {
+	const getRevealedCardData = (id?: number) => {
+		if (!id) return null;
+
 		const revealedCardData = data.data.find((card) => {
 			return card.id === id;
 		});
@@ -74,7 +75,6 @@ const Index = () => {
 
 		if (spendCoins(READING_COST)) {
 			const card = getRandomCard();
-			setRevealedCard(card);
 			setRevealedType(selectedCardType.type);
 			updateReadCards(selectedCardType.type, card.id);
 			setIsConfirmOpen(false);
@@ -189,14 +189,14 @@ const Index = () => {
 			/>
 
 			<ProphecyModal
-				isOpen={isProphecyOpen}
+				isOpen={isProphecyOpen || isCardOpened}
 				onClose={() => {
 					setIsProphecyOpen(false);
-					setRevealedCard(null);
+					setIsCardOpened(false);
 					setRevealedType(null);
 					setSelectedCardType(null);
 				}}
-				card={revealedCard}
+				card={getRevealedCardData(readCards[selectedCardType?.type])}
 				cardType={selectedCardType}
 				prophecyType={revealedType}
 			/>
