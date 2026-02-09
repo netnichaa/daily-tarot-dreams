@@ -50,14 +50,6 @@ export const ProphecyModal = ({
 
 			{/* Modal content */}
 			<div className="relative z-10 w-full max-w-sm animate-scale-in">
-				{/* Close button */}
-				<button
-					onClick={onClose}
-					className="absolute -top-12 right-0 p-2 text-foreground/60 hover:text-foreground transition-colors"
-				>
-					<X className="w-6 h-6" />
-				</button>
-
 				{/* Card container with flip animation */}
 				<div className="perspective-1000">
 					<div
@@ -99,9 +91,8 @@ export const ProphecyModal = ({
               `}
 							>
 								<div className="flex items-center justify-center gap-2 mb-2">
-									<span className="text-2xl">{cardType.icon}</span>
-									<h2 className="font-display text-xl font-semibold gold-text">
-										{cardType.label} Prophecy
+									<h2 className="font-display text-2xl font-semibold gold-text">
+										{card.name.EN}
 									</h2>
 								</div>
 
@@ -120,15 +111,10 @@ export const ProphecyModal = ({
 								</div>
 							</div>
 
-							{/* Card name */}
-							<div className="px-6 py-4 text-center border-b border-primary/10">
-								<p className="font-body text-sm text-muted-foreground uppercase tracking-wider">
-									The Cards Reveal
-								</p>
-								<h3 className="font-display text-2xl font-bold text-foreground mt-1">
-									{card.name.EN}
-								</h3>
-							</div>
+							<img
+								className="relative w-1/2 mx-auto pt-6"
+								src={card.imagePath}
+							/>
 
 							{/* Prophecy text */}
 							<div className="p-6">
@@ -162,7 +148,7 @@ export const ProphecyModal = ({
                        hover:shadow-[0_0_30px_hsl(var(--primary)/0.5)]
                        animate-fade-in-up"
 					>
-						Accept Your Fate
+						Back
 					</button>
 				)}
 			</div>
