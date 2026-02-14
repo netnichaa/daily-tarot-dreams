@@ -26,7 +26,7 @@ export const ProphecyModal = ({
 			const timer = setTimeout(() => {
 				setIsRevealed(true);
 				setIsFlipping(false);
-			}, 600);
+			}, 3000);
 			return () => clearTimeout(timer);
 		} else {
 			setIsRevealed(false);
@@ -41,7 +41,7 @@ export const ProphecyModal = ({
 	const starRating = prophecyData.value;
 
 	return (
-		<div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+		<div className="fixed inset-0 z-50 flex items-center justify-center p-4 animate-fade-in-up">
 			{/* Backdrop */}
 			<div
 				className="absolute inset-0 bg-mystic-deep/90 backdrop-blur-md animate-fade-in-up"
@@ -55,7 +55,7 @@ export const ProphecyModal = ({
 					<div
 						className={`
             relative preserve-3d transition-transform duration-600 ease-in-out
-            ${isFlipping ? "animate-card-flip" : ""}
+            ${isFlipping ? "animate-multi-rotate-speedup" : ""}
             ${isRevealed ? "rotate-y-180" : ""}
           `}
 					>
@@ -69,9 +69,6 @@ export const ProphecyModal = ({
             `}
 						>
 							<Sparkles className="w-16 h-16 text-primary animate-glow-pulse" />
-							<p className="font-display text-lg text-foreground/80 mt-4">
-								Revealing your destiny...
-							</p>
 						</div>
 
 						{/* Card front (prophecy revealed) */}
