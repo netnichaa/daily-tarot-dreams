@@ -57,7 +57,7 @@ export const TarotCard = ({
 					<img
 						className="w-full h-full"
 						src={
-							isRead
+							isRead && revealedCard?.imagePath
 								? revealedCard.imagePath
 								: "src/assets/images/card_back.jpg"
 						}
