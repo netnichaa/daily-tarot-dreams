@@ -190,6 +190,7 @@ const Index = () => {
 
 			<ProphecyModal
 				isOpen={isProphecyOpen || isCardOpened}
+				isRead={isCardOpened}
 				onClose={() => {
 					setIsProphecyOpen(false);
 					setIsCardOpened(false);

@@ -4,6 +4,7 @@ import { TarotCard, ProphecyType, CardTypeConfig } from "@/types/tarot";
 
 interface ProphecyModalProps {
 	isOpen: boolean;
+	isRead: boolean;
 	onClose: () => void;
 	card: TarotCard | null;
 	cardType: CardTypeConfig | null;
@@ -12,6 +13,7 @@ interface ProphecyModalProps {
 
 export const ProphecyModal = ({
 	isOpen,
+	isRead,
 	onClose,
 	card,
 	cardType,
@@ -21,7 +23,14 @@ export const ProphecyModal = ({
 	const [isFlipping, setIsFlipping] = useState(false);
 
 	useEffect(() => {
-		if (isOpen && card) {
+		if (isOpen && isRead && card) {
+			setIsFlipping(true);
+			const timer = setTimeout(() => {
+				setIsRevealed(true);
+				setIsFlipping(false);
+			}, 300);
+			return () => clearTimeout(timer);
+		} else if (isOpen && card) {
 			setIsFlipping(true);
 			const timer = setTimeout(() => {
 				setIsRevealed(true);
@@ -32,7 +41,7 @@ export const ProphecyModal = ({
 			setIsRevealed(false);
 			setIsFlipping(false);
 		}
-	}, [isOpen, card]);
+	}, [isOpen, isRead, card]);
 
 	if (!isOpen || !card || !prophecyType || !cardType) return null;
 
@@ -55,8 +64,9 @@ export const ProphecyModal = ({
 					<div
 						className={`
             relative preserve-3d transition-transform duration-600 ease-in-out
-            ${isFlipping ? "animate-multi-rotate-speedup" : ""}
+            ${isFlipping && !isRead ? "animate-multi-rotate-speedup" : ""}
             ${isRevealed ? "rotate-y-180" : ""}
+			${isRead ? "animate-card-flip" : ""}
           `}
 					>
 						{/* Card back (showing first) */}
